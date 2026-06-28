@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{PROJECT_NAME}}</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #111;
+            color: #eee;
+            font-family: sans-serif;
+        }
+        #game {
+            display: block;
+            margin: 0 auto;
+        }
+        #status {
+            text-align: center;
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="status">Loading {{PROJECT_NAME}}...</div>
+    <script src="wasm_exec.js"></script>
+    <script>
+        const status = document.getElementById("status");
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("game.wasm"), go.importObject)
+            .then((result) => {
+                status.textContent = "Running";
+                go.run(result.instance);
+            })
+            .catch((err) => {
+                status.textContent = "Failed to load game: " + err;
+                console.error(err);
+            });
+    </script>
+</body>
+</html>

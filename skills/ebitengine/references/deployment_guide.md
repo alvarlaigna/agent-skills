@@ -114,11 +114,27 @@ Build:
 GOOS=js GOARCH=wasm go build -trimpath -o dist/main.wasm ./cmd/game
 ```
 
-Copy the matching `wasm_exec.js` from the Go toolchain:
+Copy the matching `wasm_exec.js` from the Go toolchain. The path depends on the Go version (Go 1.24+ moved support files to `lib/wasm`):
 
 ```bash
+# Go 1.24 and newer
+cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" dist/
+
+# Go 1.23 and older
 cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" dist/
 ```
+
+On Windows PowerShell:
+
+```powershell
+$goroot = go env GOROOT
+# Go 1.24 and newer
+Copy-Item "$goroot\lib\wasm\wasm_exec.js" dist\
+# Go 1.23 and older
+# Copy-Item "$goroot\misc\wasm\wasm_exec.js" dist\
+```
+
+Prefer running `scripts/build_wasm.sh` or `scripts/build_wasm.ps1`, which selects the correct path automatically.
 
 WASM checklist:
 

@@ -56,6 +56,20 @@ internal/assets/       # embed.FS and loading functions
 - Read [ecosystem tooling](references/ecosystem_tooling.md) before adding UI, scene, ECS, collision, map, animation, particles, debugging, or asset-pipeline dependencies.
 - Read [deployment guide](references/deployment_guide.md) when building for desktop, WebAssembly, mobile, Steam, release packaging, or platform-specific smoke tests.
 
+## Templates and Scripts
+
+Use bundled scaffolding instead of regenerating project layout or wasm packaging from memory.
+
+- **Run** `scripts/new_project.py` when creating a new Ebitengine project. Prefer this over hand-assembling packages.
+  - Example: `python scripts/new_project.py --out ./my-game --name "My Game" --module example.com/my-game`
+- **Read** files under `templates/` when adding a missing package or matching the canonical layout (`cmd/game`, `internal/app`, `internal/game`, `internal/assets`, `internal/input`, `internal/render`).
+- **Run** `scripts/build_wasm.sh` or `scripts/build_wasm.ps1` for WebAssembly builds. This copies `wasm_exec.js` from the correct Go toolchain path (Go 1.24+ uses `lib/wasm`).
+- **Run** `scripts/release.sh` or `scripts/release.ps1` for multi-target desktop release builds.
+
+On Windows, use the `.ps1` scripts. On Linux and macOS, use the `.sh` scripts. Run scripts from the skill directory or pass the user's project path as the first argument.
+
+Do not read script source into context unless debugging the skill itself; execute scripts and use their output.
+
 ## Review Checklist
 
 Before finalizing Ebitengine work, check:

@@ -22,6 +22,25 @@ For detailed API usage and architectural patterns, read the bundled references:
 - **`references/deployment_guide.md`**: Production build pipelines, CMake setup, Emscripten (WebAssembly) compilation, and Go cross-compilation.
 - **`references/ecosystem_libraries.md`**: Curated list of the best Raylib ecosystem libraries, GUI frameworks (raygui, Dear ImGui), extensions, and tools.
 
+## Templates and Scripts
+
+Use bundled scaffolding instead of regenerating build files from memory.
+
+- **Run** `scripts/new_project.py` when creating a new raylib project. Prefer this over hand-assembling files.
+  - Example: `python scripts/new_project.py --out ./my-game --name "My Game" --lang c --layout single`
+  - Supports `--lang c|cpp|go` and `--layout single|multi`.
+- **Read** files under `templates/` when adding a missing build file or matching the canonical project shape.
+  - `templates/c/main.c`: desktop and web loop with `UpdateDrawFrame()` and `emscripten_set_main_loop()`.
+  - `templates/c/CMakeLists.txt`: raylib 6.0 FetchContent pattern.
+  - `templates/multi-file/`: screen-state-machine layout for larger games.
+- **Run** `scripts/build.sh` or `scripts/build.ps1` for CMake desktop builds.
+- **Run** `scripts/build_web.sh` or `scripts/build_web.ps1` for Emscripten web builds (set `RAYLIB_PATH` first).
+- **Run** `scripts/cross_compile_go.sh` or `scripts/cross_compile_go.ps1` for raylib-go cross-compilation.
+
+On Windows, use the `.ps1` scripts. On Linux and macOS, use the `.sh` scripts. Run scripts from the skill directory or pass the user's project path as the first argument.
+
+Do not read script source into context unless debugging the skill itself; execute scripts and use their output.
+
 ## Best Practices
 
 1. **Window Initialization First**: You MUST call `InitWindow()` before loading any textures, models, or shaders, because these require an active OpenGL context.

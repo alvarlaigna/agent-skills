@@ -16,6 +16,10 @@ This is a personal collection, but suggestions and new skills are welcome.
    python scripts/validate.py
    ```
 
+   For skills with `scripts/new_project.py`, smoke-test scaffolding into a temp
+   directory and run the narrowest practical build or test command (for example
+   `go test ./...` for Ebitengine templates).
+
    For a stricter check against the full standard, use `skills-ref validate
    skills/<name>` (see <https://agentskills.io>) and `claude plugin validate .`.
 5. Open a pull request that links the issue.
