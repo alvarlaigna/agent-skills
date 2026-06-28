@@ -1,12 +1,60 @@
-# Operating system
+# macOS
 .DS_Store
-Thumbs.db
+._*
+.Spotlight-V100
+.Trashes
 
-# Editors
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# Editors and IDEs
 .idea/
 .vscode/
 *.swp
+*.swo
+*.sublime-workspace
 
-# Python
+# Claude Code (local, machine-specific)
+.claude/settings.local.json
+
+# Python (validate.py)
 __pycache__/
-*.pyc
+*.py[cod]
+.venv/
+venv/
+
+# Go (skills may bundle example code)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Node (optional tooling)
+node_modules/
+npm-debug.log*
+
+# Build output
+bin/
+dist/
+build/
+*.wasm
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and temp
+*.log
+tmp/
+.cache/

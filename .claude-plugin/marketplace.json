@@ -8,7 +8,7 @@
     {
       "name": "agent-skills",
       "source": "./",
-      "description": "Agent skills in the open Agent Skills (SKILL.md) standard.",
+      "description": "Portable skills in the open Agent Skills (SKILL.md) standard.",
       "license": "MIT",
       "homepage": "https://github.com/alvarlaigna/agent-skills",
       "repository": "https://github.com/alvarlaigna/agent-skills"

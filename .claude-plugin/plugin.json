@@ -1,6 +1,6 @@
 {
   "name": "agent-skills",
-  "description": "Agent skills in the open Agent Skills (SKILL.md) standard.",
+  "description": "Portable skills in the open Agent Skills (SKILL.md) standard.",
   "version": "0.1.0",
   "author": {
     "name": "Alvar Laigna"
