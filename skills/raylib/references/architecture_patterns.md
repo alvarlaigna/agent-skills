@@ -20,7 +20,7 @@ Raylib is organized into self-contained modules, but all functions are exposed v
 
 int main(void) {
     // 1. Initialization
-    InitWindow(800, 450, "My Raylib Game - by Alvar Laigna");
+    InitWindow(800, 450, "My Raylib Game");
     SetTargetFPS(60); // Set desired framerate
 
     // Load resources here (textures, models, audio)

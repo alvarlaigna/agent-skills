@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project({{PROJECT_NAME}})
+project({{PROJECT_SLUG}})
 
 include(FetchContent)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

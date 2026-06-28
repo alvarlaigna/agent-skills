@@ -2,7 +2,7 @@
 param(
     [string]$ProjectDir = ".",
     [string]$Output = "game.html",
-    [string]$Main = "main.c",
+    [string]$Main = "",
     [string]$RaylibPath = $env:RAYLIB_PATH,
     [string]$ShellFile = "web/minshell.html",
     [string]$Resources = "resources"
@@ -11,6 +11,12 @@ param(
 $ErrorActionPreference = "Stop"
 Push-Location $ProjectDir
 try {
+    # Pick the entry file: honor an explicit -Main, else prefer main.c, then main.cpp.
+    if (-not $Main) {
+        if (Test-Path "main.c") { $Main = "main.c" }
+        elseif (Test-Path "main.cpp") { $Main = "main.cpp" }
+        else { Write-Error "No main.c or main.cpp found in $ProjectDir (pass -Main to override)" }
+    }
     if (-not $RaylibPath) {
         Write-Error "Set RAYLIB_PATH to a raylib install with libraylib.web.a"
     }

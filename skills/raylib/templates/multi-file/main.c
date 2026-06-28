@@ -50,7 +50,7 @@ static void UpdateDrawFrame(void)
 
 int main(void)
 {
-    InitWindow(screenWidth, screenHeight, "{{PROJECT_NAME}} - by Alvar Laigna");
+    InitWindow(screenWidth, screenHeight, "{{PROJECT_NAME}}");
     SetTargetFPS(60);
 
     InitTitleScreen();

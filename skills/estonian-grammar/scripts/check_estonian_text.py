@@ -22,13 +22,13 @@ for stream in (sys.stdout, sys.stderr):
 
 
 AI_FILLER_PATTERNS = [
-    (r"\bon oluline m[äa�\?]rkida, et\b", "Likely filler: consider deleting or stating the point directly."),
+    (r"\bon oluline m[äa]rkida, et\b", "Likely filler: consider deleting or stating the point directly."),
     (r"\btasub mainida, et\b", "Likely filler: consider deleting or making the claim concrete."),
     (r"\bantud kontekstis\b", "Often bureaucratic/AI-like: consider 'selles kontekstis' or omit."),
-    (r"\bl[äa�\?]bi selle\b", "Possible English/Russian calque: consider 'sellega', 'seeläbi', or a verb."),
+    (r"\bl[äa]bi selle\b", "Possible English/Russian calque: consider 'sellega', 'seeläbi', or a verb."),
     (r"\bparim(ad|aid|ate)? praktik(ad|aid|ate)?\b", "Possible English calque: consider 'head tavad' or a specific practice."),
-    (r"\bteeb m[õo�\?]tet\b", "English calque: Estonian usually uses 'on mõtet' or rephrases."),
-    (r"\bpakub v[õo�\?]imalust\b", "Often vague: name the concrete action or benefit."),
+    (r"\bteeb m[õo]tet\b", "English calque: Estonian usually uses 'on mõtet' or rephrases."),
+    (r"\bpakub v[õo]imalust\b", "Often vague: name the concrete action or benefit."),
     (r"\binnovaatiline lahendus\b", "Generic marketing phrase: make the benefit specific."),
 ]
 

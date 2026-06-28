@@ -2,7 +2,10 @@ build/
 cmake-build-*/
 *.o
 *.exe
-*.html
-*.js
-*.wasm
-*.data
+
+# Web/Emscripten build output is emitted at the project root. Anchor these to the
+# root so the source web shell in web/ (web/minshell.html) stays tracked.
+/*.html
+/*.js
+/*.wasm
+/*.data

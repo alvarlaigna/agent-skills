@@ -23,5 +23,5 @@ func (r *Renderer) Draw(screen *ebiten.Image, snap game.Snapshot) {
 	_ = r.store
 
 	ebitenutil.DrawCircle(screen, float64(snap.PlayerX), float64(snap.PlayerY), 12, color.RGBA{R: 180, G: 60, B: 60, A: 255})
-	ebitenutil.DebugPrint(screen, fmt.Sprintf("{{PROJECT_NAME}}  score: %d", snap.Score))
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("%s  score: %d", "{{PROJECT_NAME}}", snap.Score))
 }

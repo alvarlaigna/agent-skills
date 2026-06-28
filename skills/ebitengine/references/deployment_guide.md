@@ -111,7 +111,7 @@ Linux checklist:
 Build:
 
 ```bash
-GOOS=js GOARCH=wasm go build -trimpath -o dist/main.wasm ./cmd/game
+GOOS=js GOARCH=wasm go build -trimpath -o dist/game.wasm ./cmd/game
 ```
 
 Copy the matching `wasm_exec.js` from the Go toolchain. The path depends on the Go version (Go 1.24+ moved support files to `lib/wasm`):

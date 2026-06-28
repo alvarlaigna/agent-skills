@@ -7,6 +7,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$prevGOOS = $env:GOOS
+$prevGOARCH = $env:GOARCH
 Push-Location $ProjectDir
 try {
     New-Item -ItemType Directory -Force -Path $DistDir | Out-Null
@@ -26,5 +28,8 @@ try {
     Write-Host "Release builds written to $DistDir"
 }
 finally {
+    # Restore GOOS/GOARCH to their prior values. A null value clears a variable that was unset.
+    [Environment]::SetEnvironmentVariable("GOOS", $prevGOOS, "Process")
+    [Environment]::SetEnvironmentVariable("GOARCH", $prevGOARCH, "Process")
     Pop-Location
 }

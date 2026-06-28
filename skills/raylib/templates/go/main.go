@@ -19,13 +19,13 @@ func updateDrawFrame() {
 
 	rl.BeginDrawing()
 	rl.ClearBackground(rl.RayWhite)
-	rl.DrawText("{{PROJECT_NAME}} - by Alvar Laigna", 190, 200, 20, rl.LightGray)
+	rl.DrawText("{{PROJECT_NAME}}", 190, 200, 20, rl.LightGray)
 	rl.DrawFPS(10, 10)
 	rl.EndDrawing()
 }
 
 func main() {
-	rl.InitWindow(screenWidth, screenHeight, "{{PROJECT_NAME}} - by Alvar Laigna")
+	rl.InitWindow(screenWidth, screenHeight, "{{PROJECT_NAME}}")
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(60)

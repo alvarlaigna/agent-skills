@@ -61,7 +61,7 @@ cmake --build build-web
 ```
 
 ## HTML5 / WebAssembly (Emscripten)
-To compile for the web, use Emscripten (`emcc`). Refactor the game loop into `UpdateDrawFrame()` and register it with `emscripten_set_main_loop()` — see `templates/c/main.c`.
+To compile for the web, use Emscripten (`emcc`). Refactor the game loop into `UpdateDrawFrame()` and register it with `emscripten_set_main_loop()`; see `templates/c/main.c`.
 
 1. Install Emscripten SDK and activate it in the shell.
 2. Build raylib for web (`-DPLATFORM=Web`) or use CMake with `-DPLATFORM=Web`.

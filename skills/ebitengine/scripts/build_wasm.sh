@@ -13,10 +13,14 @@ mkdir -p "$DIST_DIR"
 GOOS=js GOARCH=wasm go build -trimpath -ldflags="-s -w" -o "$DIST_DIR/$OUTPUT_NAME" "$PACKAGE"
 
 GOROOT="$(go env GOROOT)"
-GOVERSION="$(go env GOVERSION | sed 's/go//')"
-MAJOR="${GOVERSION%%.*}"
-MINOR="${GOVERSION#*.}"
-MINOR="${MINOR%%.*}"
+GOVERSION="$(go env GOVERSION)"
+# Extract major and minor digits, ignoring suffixes like rc1 or beta1.
+MAJOR=0
+MINOR=0
+if [[ "$GOVERSION" =~ go([0-9]+)\.([0-9]+) ]]; then
+  MAJOR="${BASH_REMATCH[1]}"
+  MINOR="${BASH_REMATCH[2]}"
+fi
 
 if [ "$MAJOR" -gt 1 ] || { [ "$MAJOR" -eq 1 ] && [ "$MINOR" -ge 24 ]; }; then
   WASM_DIR="$GOROOT/lib/wasm"

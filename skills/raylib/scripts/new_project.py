@@ -18,9 +18,20 @@ TEMPLATES = SKILL_DIR / "templates"
 
 PLACEHOLDERS = {
     "{{PROJECT_NAME}}": "name",
+    "{{PROJECT_SLUG}}": "slug",
     "{{MODULE_PATH}}": "module",
     "{{YEAR}}": "year",
 }
+
+# Reject characters that could break out of a C/Go string literal or inject
+# markup once the name is substituted into the templates. Matches the pattern
+# used by the other generators in this repo.
+_UNSAFE_NAME = re.compile(r'[\x00-\x1f"\\`<>{}]')
+
+# A valid Go module path: a leading alphanumeric followed by a restricted set.
+# fullmatch (not match plus $) is used so a trailing newline cannot smuggle
+# extra directives into the generated go.mod.
+_MODULE_PATH = re.compile(r'[A-Za-z0-9][A-Za-z0-9._~/-]*')
 
 
 def slugify(name: str) -> str:
@@ -87,9 +98,24 @@ def main() -> int:
     parser.add_argument("--force", action="store_true", help="Allow writing into a non-empty directory")
     args = parser.parse_args()
 
+    if _UNSAFE_NAME.search(args.name):
+        print(
+            'error: --name may not contain control characters or any of " \\ ` < > { }',
+            file=sys.stderr,
+        )
+        return 1
+    if not _MODULE_PATH.fullmatch(args.module):
+        print(
+            "error: --module must match [A-Za-z0-9][A-Za-z0-9._~/-]* "
+            "(letters, digits, and . _ ~ / -, starting with a letter or digit)",
+            file=sys.stderr,
+        )
+        return 1
+
     out: Path = args.out.resolve()
     values = {
         "name": args.name,
+        "slug": slugify(args.name),
         "module": args.module,
         "year": str(datetime.now().year),
     }
@@ -127,6 +153,12 @@ def main() -> int:
         print(f"Created raylib project '{args.name}' at {out}")
         for path in written:
             print(f"  {path}")
+        if args.lang == "go":
+            print()
+            print("Next steps (Go): resolve dependencies and build:")
+            print(f"  cd {out}")
+            print("  go mod tidy")
+            print("  go build ./...")
         return 0
     except (FileExistsError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)

@@ -4,12 +4,24 @@ set -euo pipefail
 
 PROJECT_DIR="${1:-.}"
 OUTPUT="${2:-game.html}"
-MAIN="${MAIN:-main.c}"
+MAIN="${MAIN:-}"
 RAYLIB_PATH="${RAYLIB_PATH:-}"
 SHELL_FILE="${SHELL_FILE:-web/minshell.html}"
 RESOURCES="${RESOURCES:-resources}"
 
 cd "$PROJECT_DIR"
+
+# Pick the entry file: honor an explicit MAIN, else prefer main.c, then main.cpp.
+if [ -z "$MAIN" ]; then
+  if [ -f main.c ]; then
+    MAIN=main.c
+  elif [ -f main.cpp ]; then
+    MAIN=main.cpp
+  else
+    echo "error: no main.c or main.cpp found in $PROJECT_DIR (set MAIN to override)" >&2
+    exit 1
+  fi
+fi
 
 if [ -z "$RAYLIB_PATH" ]; then
   echo "error: set RAYLIB_PATH to a raylib install with libraylib.web.a" >&2

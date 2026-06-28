@@ -3,8 +3,9 @@ package app
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 
+	"{{MODULE_PATH}}/internal/assets"
 	"{{MODULE_PATH}}/internal/game"
-	"{{MODULE_PATH}}/internal/input"
+	"{{MODULE_PATH}}/internal/render"
 )
 
 // Scene is an optional abstraction for distinct app modes.
@@ -15,22 +16,25 @@ type Scene interface {
 
 // SceneGame wraps the default single-scene flow when a full scene manager is not needed yet.
 type SceneGame struct {
-	state *game.State
-	input *input.Mapper
+	state    *game.State
+	renderer *render.Renderer
 }
 
-func NewSceneGame(state *game.State) *SceneGame {
-	return &SceneGame{state: state, input: input.NewMapper()}
+// Compile-time check that *SceneGame satisfies the Scene interface.
+var _ Scene = (*SceneGame)(nil)
+
+func NewSceneGame(state *game.State, store *assets.Store) *SceneGame {
+	return &SceneGame{state: state, renderer: render.NewRenderer(store)}
 }
 
-func (s *SceneGame) Update() game.Intent {
-	return s.input.Poll()
-}
-
-func (s *SceneGame) Tick(intent game.Intent) {
+// Update advances the game state with the given intent and returns the next scene.
+// The default flow stays on the same scene.
+func (s *SceneGame) Update(intent game.Intent) (Scene, error) {
 	s.state.Tick(intent)
+	return s, nil
 }
 
-func (s *SceneGame) Snapshot() game.Snapshot {
-	return s.state.Snapshot()
+// Draw renders the current game state to the screen.
+func (s *SceneGame) Draw(screen *ebiten.Image) {
+	s.renderer.Draw(screen, s.state.Snapshot())
 }

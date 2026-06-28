@@ -15,6 +15,9 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES = SKILL_DIR / "templates"
 
+# Reject characters that would break the generated index.html title/status or Go source.
+_UNSAFE_NAME = re.compile(r'[\x00-\x1f"\\`<>{}]')
+
 
 def substitute(text: str, values: dict[str, str]) -> str:
     for key in ("{{PROJECT_NAME}}", "{{MODULE_PATH}}", "{{YEAR}}"):
@@ -65,7 +68,14 @@ def main() -> int:
     args = parser.parse_args()
 
     out = args.out.resolve()
-    if not re.match(r"^[a-zA-Z0-9._/-]+$", args.module):
+    if _UNSAFE_NAME.search(args.name):
+        print(
+            "error: --name may not contain quotes, backslashes, backticks, "
+            "angle brackets, braces, or control characters",
+            file=sys.stderr,
+        )
+        return 1
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]*", args.module):
         print("error: module path contains invalid characters", file=sys.stderr)
         return 1
 

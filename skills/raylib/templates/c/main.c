@@ -17,14 +17,14 @@ static void UpdateDrawFrame(void)
     // Draw
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    DrawText("{{PROJECT_NAME}} - by Alvar Laigna", 190, 200, 20, LIGHTGRAY);
+    DrawText("{{PROJECT_NAME}}", 190, 200, 20, LIGHTGRAY);
     DrawFPS(10, 10);
     EndDrawing();
 }
 
 int main(void)
 {
-    InitWindow(screenWidth, screenHeight, "{{PROJECT_NAME}} - by Alvar Laigna");
+    InitWindow(screenWidth, screenHeight, "{{PROJECT_NAME}}");
     SetTargetFPS(60);
 
     // Load resources after InitWindow (OpenGL context required).

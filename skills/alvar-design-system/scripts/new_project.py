@@ -22,6 +22,9 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES = SKILL_DIR / "templates"
 
+# Reject characters that would break the generated index.html title or App.tsx JSX.
+_UNSAFE_NAME = re.compile(r'[\x00-\x1f"\\`<>{}]')
+
 # Design-system source folders copied into the new project's src/.
 DS_DIRS = ("styles", "lib", "primitives", "components")
 
@@ -55,6 +58,12 @@ def main() -> int:
 
     out = Path(args.out).resolve()
     name = args.name or out.name
+    if _UNSAFE_NAME.search(name):
+        print(
+            "error: --name may not contain quotes, backslashes, backticks, "
+            "angle brackets, braces, or control characters"
+        )
+        return 1
     slug = slugify(name)
 
     if out.exists() and any(out.iterdir()) and not args.force:
