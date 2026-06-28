@@ -1,0 +1,17 @@
+{
+  "name": "alvarlaigna-skills",
+  "owner": {
+    "name": "Alvar Laigna"
+  },
+  "description": "A curated collection of portable agent skills.",
+  "plugins": [
+    {
+      "name": "agent-skills",
+      "source": "./",
+      "description": "Agent skills in the open Agent Skills (SKILL.md) standard.",
+      "license": "MIT",
+      "homepage": "https://github.com/alvarlaigna/agent-skills",
+      "repository": "https://github.com/alvarlaigna/agent-skills"
+    }
+  ]
+}

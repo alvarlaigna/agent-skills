@@ -1,0 +1,13 @@
+# Normalize line endings to LF in the repository.
+* text=auto
+
+# Shell scripts must stay LF so they run on macOS and Linux.
+*.sh text eol=lf
+
+# Treat common binaries as binary.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.ico binary
