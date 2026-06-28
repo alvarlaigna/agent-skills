@@ -1,0 +1,208 @@
+/*
+ * Alvar Design System: global stylesheet. Import once at the app root:
+ *   import "@/styles/globals.css"
+ *
+ * A remote @import must precede all other rules (CSS ordering), so the brand
+ * fonts come first, before the Tailwind and token imports. Self-host with
+ * fontsource instead and drop that line if you prefer.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Grotesk:wght@300..700&display=swap");
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* Dark mode is driven by a `.dark` class on <html> (class strategy). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Safelist the semantic-token utilities. Apps that style against the *shipped*
+ * stylesheet (no live Tailwind compiler) still get the brand palette in the
+ * compiled CSS even when this repo's own components don't use every class.
+ * Layout flows through the Stack / Cluster / Grid primitives, so raw layout
+ * utilities are intentionally not safelisted here.
+ */
+@source inline("{bg,text,border,ring}-{background,surface,surface-raised,foreground,muted,muted-foreground,border,input,ring,primary,primary-hover,primary-active,primary-foreground,secondary,secondary-hover,secondary-foreground,success,success-foreground,warning,warning-foreground,danger,danger-hover,danger-foreground,info,info-foreground}");
+@source inline("bg-{info-surface,success-surface,warning-surface,danger-surface}");
+@source inline("font-{display,sans,mono}");
+@source inline("text-{xs,sm,base,lg,xl,2xl,3xl,4xl}");
+@source inline("rounded-{sm,md,lg,xl,full}");
+@source inline("shadow-{xs,sm,md,lg}");
+
+/*
+ * Expose the SEMANTIC token layer as Tailwind utilities.
+ * `@theme inline` references the live CSS variables, so utilities like
+ * `bg-background` / `text-foreground` automatically follow the active theme.
+ * Add new utilities here: never hard-code hex values in components.
+ */
+@theme inline {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-border: var(--color-border);
+  --color-input: var(--color-input);
+  --color-ring: var(--color-ring);
+
+  --color-primary: var(--color-action-primary);
+  --color-primary-hover: var(--color-action-primary-hover);
+  --color-primary-active: var(--color-action-primary-active);
+  --color-primary-foreground: var(--color-action-primary-foreground);
+
+  --color-secondary: var(--color-action-secondary);
+  --color-secondary-hover: var(--color-action-secondary-hover);
+  --color-secondary-foreground: var(--color-action-secondary-foreground);
+
+  --color-success: var(--color-success);
+  --color-success-foreground: var(--color-success-foreground);
+  --color-warning: var(--color-warning);
+  --color-warning-foreground: var(--color-warning-foreground);
+  --color-danger: var(--color-danger);
+  --color-danger-hover: var(--color-danger-hover);
+  --color-danger-foreground: var(--color-danger-foreground);
+  --color-info: var(--color-info);
+  --color-info-foreground: var(--color-info-foreground);
+
+  --color-info-surface: var(--color-info-surface);
+  --color-success-surface: var(--color-success-surface);
+  --color-warning-surface: var(--color-warning-surface);
+  --color-danger-surface: var(--color-danger-surface);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  --ease-standard: var(--ease-standard);
+  --ease-emphasized: var(--ease-emphasized);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: var(--leading-normal);
+    font-synthesis-weight: none;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  /* Visible, branded focus for keyboard users (accessibility-first). */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  /* Respect user motion preferences. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Opt-in glassmorphism surface. Use sparingly on layered elements only. */
+  .glass {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+}
+
+/* Component animations, referenced via arbitrary `animate-[…]` utilities. */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(320%);
+  }
+}
+
+/* Overlay / disclosure animations (Radix data-state driven). */
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes overlay-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dialog-out {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(10px) scale(0.98); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes toast-out {
+  from { opacity: 1; }
+  to { opacity: 0; transform: translateY(8px); }
+}
+@keyframes tooltip-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}

@@ -1,0 +1,219 @@
+/*
+ * Alvar Design System: Design Tokens
+ * -----------------------------------
+ * Two layers, by design (see references/tokens.md):
+ *   1. PRIMITIVES: raw brand values. Describe WHAT a value is (--ember-500).
+ *                    Never reference these directly in components.
+ *   2. SEMANTIC: behavioral tokens. Describe what a value DOES
+ *                    (--color-action-primary-hover). Components use ONLY these.
+ *
+ * Semantic tokens are remapped per theme (.dark) without touching primitives,
+ * so theming never breaks a component. Tailwind utilities (bg-background,
+ * text-foreground, …) are wired to the semantic layer in globals.css.
+ */
+
+:root {
+  /* ── PRIMITIVES ─────────────────────────────────────────────── */
+
+  /* Brand anchors (from the brandbook) */
+  --snow-white: #fdfbf7;
+  --classic-linen: #f1ece2;
+  --navy-ink: #1a2a3a;
+  --ember-red: #d95d39;
+
+  /* Warm neutral ramp: paper at the top, ink at the bottom */
+  --neutral-50: #fdfbf7; /* Snow White */
+  --neutral-100: #f1ece2; /* Classic Linen */
+  --neutral-200: #e6ddcd;
+  --neutral-300: #d3c8b4;
+  --neutral-400: #aca08a;
+  --neutral-500: #7e7464;
+  --neutral-600: #585347;
+  --neutral-700: #3a4651;
+  --neutral-800: #283744;
+  --neutral-900: #1a2a3a; /* Navy Ink */
+  --neutral-950: #111c26;
+
+  /* Ember accent ramp */
+  --ember-50: #fbeee9;
+  --ember-100: #f6d8cd;
+  --ember-200: #efb6a0;
+  --ember-300: #e89073;
+  --ember-400: #e1744f;
+  --ember-500: #d95d39; /* Ember Red */
+  --ember-600: #c24a2a;
+  --ember-700: #a03b22;
+  --ember-800: #7d2f1d;
+  --ember-900: #5e251a;
+
+  /* Functional hues (tuned to sit beside the warm/ink palette) */
+  --green-500: #3f8f6b;
+  --green-600: #347458;
+  --amber-500: #c98a2e;
+  --amber-600: #a87122;
+  --red-500: #c4452c;
+  --red-600: #a4361f;
+  --blue-500: #3a6ea5;
+  --blue-600: #2f5985;
+
+  /* ── SPACING ────────────────────────────────────────────────── */
+  /* 4px baseline grid. Never deviate from this scale in components. */
+  --space-0: 0;
+  --space-px: 1px;
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.25rem; /* 20 */
+  --space-6: 1.5rem; /* 24 */
+  --space-8: 2rem; /* 32 */
+  --space-10: 2.5rem; /* 40 */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-20: 5rem; /* 80 */
+  --space-24: 6rem; /* 96 */
+  --space-32: 8rem; /* 128 */
+
+  /* Fluid section rhythm: viewport-aware "breathing room". */
+  --space-section: clamp(4rem, 10vw, 9rem);
+  --space-gutter: clamp(1rem, 5vw, 3rem);
+
+  /* ── RADIUS ─────────────────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* ── TYPOGRAPHY ─────────────────────────────────────────────── */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", monospace;
+
+  /* Fluid type scale (clamp): radical scale contrast. */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem);
+  --text-3xl: clamp(2rem, 1.5rem + 2.4vw, 3.2rem);
+  --text-4xl: clamp(2.75rem, 1.9rem + 4vw, 5rem);
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.6; /* body min */
+  --leading-relaxed: 1.75;
+  --measure: 68ch; /* comfortable reading width */
+
+  /* ── ELEVATION ──────────────────────────────────────────────── */
+  /* Soft, low-contrast. Prefer whitespace over shadows. */
+  --shadow-xs: 0 1px 2px hsl(210 38% 16% / 0.04);
+  --shadow-sm: 0 2px 8px hsl(210 38% 16% / 0.06);
+  --shadow-md: 0 8px 24px hsl(210 38% 16% / 0.08);
+  --shadow-lg: 0 16px 48px hsl(210 38% 16% / 0.12);
+
+  /* Glassmorphism: use sparingly, layered surfaces only. */
+  --glass-bg: hsl(40 60% 98% / 0.55);
+  --glass-border: hsl(210 38% 16% / 0.08);
+  --glass-blur: 16px;
+
+  /* ── MOTION ─────────────────────────────────────────────────── */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 360ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1.2);
+
+  /* ── Z-INDEX ────────────────────────────────────────────────── */
+  --z-base: 0;
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-overlay: 60;
+  --z-toast: 70;
+
+  /* ════════════════════════════════════════════════════════════
+   * SEMANTIC LAYER: LIGHT (default)
+   * Components reference only these.
+   * ════════════════════════════════════════════════════════════ */
+
+  /* Surfaces & text */
+  --color-background: var(--neutral-50);
+  --color-surface: var(--neutral-100);
+  --color-surface-raised: #ffffff;
+  --color-foreground: var(--neutral-900);
+  --color-muted: var(--neutral-200);
+  --color-muted-foreground: var(--neutral-600);
+  --color-border: var(--neutral-300);
+  --color-input: var(--neutral-300);
+  --color-ring: var(--ember-500);
+
+  /* Primary action (the Ember accent earns its place: CTAs only) */
+  --color-action-primary: var(--ember-500);
+  --color-action-primary-hover: var(--ember-600);
+  --color-action-primary-active: var(--ember-700);
+  --color-action-primary-foreground: var(--snow-white);
+
+  /* Secondary / neutral action */
+  --color-action-secondary: var(--neutral-100);
+  --color-action-secondary-hover: var(--neutral-200);
+  --color-action-secondary-foreground: var(--neutral-900);
+
+  /* Feedback */
+  --color-success: var(--green-500);
+  --color-success-foreground: var(--snow-white);
+  --color-warning: var(--amber-500);
+  --color-warning-foreground: var(--neutral-950);
+  --color-danger: var(--red-500);
+  --color-danger-hover: var(--red-600);
+  --color-danger-foreground: var(--snow-white);
+  --color-info: var(--blue-500);
+  --color-info-foreground: var(--snow-white);
+
+  /* Status SURFACE tints: soft callout/badge backgrounds, theme-aware. */
+  --color-info-surface: color-mix(in srgb, var(--blue-500) 10%, var(--color-surface-raised));
+  --color-success-surface: color-mix(in srgb, var(--green-500) 12%, var(--color-surface-raised));
+  --color-warning-surface: color-mix(in srgb, var(--amber-500) 14%, var(--color-surface-raised));
+  --color-danger-surface: color-mix(in srgb, var(--red-500) 11%, var(--color-surface-raised));
+
+  /* Focus ring as its own token (decoupled from the --color-ring hue). */
+  --color-focus-ring: color-mix(in srgb, var(--color-ring) 22%, transparent);
+
+  /* Modal scrim: dims the page behind overlays (same in both themes). */
+  --color-overlay: color-mix(in srgb, var(--neutral-950) 55%, transparent);
+}
+
+/* ════════════════════════════════════════════════════════════
+ * SEMANTIC LAYER: DARK
+ * Only the semantic tokens flip. Primitives are untouched.
+ * ════════════════════════════════════════════════════════════ */
+.dark {
+  --color-background: var(--neutral-950);
+  --color-surface: var(--neutral-900);
+  --color-surface-raised: var(--neutral-800);
+  --color-foreground: var(--neutral-100);
+  --color-muted: var(--neutral-800);
+  --color-muted-foreground: var(--neutral-400);
+  --color-border: var(--neutral-700);
+  --color-input: var(--neutral-700);
+  --color-ring: var(--ember-400);
+
+  --color-action-primary: var(--ember-500);
+  --color-action-primary-hover: var(--ember-400);
+  --color-action-primary-active: var(--ember-300);
+  --color-action-primary-foreground: var(--neutral-950);
+
+  --color-action-secondary: var(--neutral-800);
+  --color-action-secondary-hover: var(--neutral-700);
+  --color-action-secondary-foreground: var(--neutral-100);
+
+  --color-success: var(--green-500);
+  --color-warning: var(--amber-500);
+  --color-danger: var(--red-500);
+  --color-danger-hover: var(--red-600);
+  --color-info: var(--blue-500);
+
+  --glass-bg: hsl(210 38% 16% / 0.5);
+  --glass-border: hsl(40 60% 98% / 0.08);
+}

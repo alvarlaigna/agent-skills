@@ -52,6 +52,7 @@ skills.
 
 | Skill | What it does |
 |-------|--------------|
+| [`alvar-design-system`](skills/alvar-design-system/) | Build frontends in the Alvar Design System: a warm, editorial, token-driven React UI on Tailwind v4. |
 | [`ebitengine`](skills/ebitengine/) | Build, test, and ship Go games and tools with Ebitengine/Ebiten. |
 | [`raylib`](skills/raylib/) | Build 2D and 3D games with raylib in C, C++, or Go. |
 
