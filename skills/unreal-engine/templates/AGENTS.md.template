@@ -1,0 +1,50 @@
+# {{PROJECT_NAME}}: rules for agents
+
+Unreal Engine project, engine association `{{ENGINE_ASSOCIATION}}`. These rules apply to every agent
+and every person working in this repository. Machine-specific notes (engine path, personal
+permissions) go in a gitignored local file, never here.
+
+## Layout
+
+| Path | What |
+|---|---|
+| `Source/{{PROJECT_NAME}}/` | All gameplay code (C++). Plain-C++ rules under `Rules/`, tests under `Tests/` |
+| `Content/{{PROJECT_NAME}}/` | Everything the game ships. Nothing shipped lives outside it |
+| `Config/` | Engine, game and input settings |
+| `scripts/editor/` | Editor Python scripts: re-runnable, absolute paths resolved at run time |
+| `docs/` | Design, roadmap, devlog, `MCP_TOOLS.md` |
+| `SourceArt/` | Source images, audio, meshes and their generator scripts |
+
+## Working rules
+
+1. Start with `git pull --rebase` and `git status`. Commit small, with explicit paths. Never force-push.
+2. Gameplay logic is C++. Blueprint and widget assets are thin subclasses holding asset references
+   and tuning. Data lives in CSV or JSON under version control.
+3. Never edit `.uasset` or `.umap` files outside the editor. One person or agent edits a given level
+   at a time.
+4. Reflection changes (new or changed `UCLASS`, `USTRUCT`, `UPROPERTY`, `UFUNCTION`, new files,
+   `Build.cs`) need a closed editor and a full build. Live Coding is for function bodies only.
+5. After any scripted or MCP edit: save, check nothing is left unsaved, and confirm the change in
+   `git status`. Graph tools compile Blueprints but do not save them.
+6. Build and package only when asked. Never build while an editor or game of this project runs.
+7. Everything shipped stays inside `/Game/{{PROJECT_NAME}}/`. Check the dependency closure of each
+   shipping map before calling content done.
+8. Every third-party asset and AI tool goes in the credits file with its licence. Assets whose
+   licence forbids AI use are placed by code only; agents do not open, edit or copy them.
+9. Read the clock before writing a time. Do not estimate it.
+
+## Definition of done
+
+1. Compiles with no new warnings from this project's modules.
+2. Logic: `{{PROJECT_NAME}}.*` automation tests pass.
+3. Visual: a screenshot read at full size, with a one-line verdict.
+4. Gameplay: the changed step ran in PIE or self-play through the real input path.
+5. Saved and visible in `git status`; committed; one line in `docs/DEVLOG.md`.
+6. The report says what was not verified.
+
+## Testing
+
+- Self-play: `{{PROJECT_NAME}}.exe -AutoPlay -Seed=1` plays, logs `AUTOPLAY PASS|FAIL <name>` lines,
+  saves screenshots and quits. Automated runs start from default settings and save none.
+- A build reaches a human only after its tests pass on the packaged build.
+- A human finding that no test caught becomes a new test.

@@ -1,0 +1,24 @@
+@AGENTS.md
+
+# Claude Code notes
+
+`AGENTS.md` (imported above) is the team rulebook and wins on any conflict. This file adds only how
+Claude Code uses its tools here. Engine path and personal permissions go in `CLAUDE.local.md`
+(gitignored).
+
+## Pick the narrowest tool
+
+| Need | Use |
+|---|---|
+| Editor state: actors, assets, levels, widgets, materials, DataTables, PIE | Unreal MCP. First call of a session: `list_toolsets`. Keep `docs/MCP_TOOLS.md` current |
+| Five or more similar edits, imports, level layout | A script in `scripts/editor/`, run through MCP Python or `ue.py python` |
+| Build, package, tests | The `unreal-engine` skill's `ue.py`, run in the background; read the log when it exits |
+| Look at the editor or game | MCP viewport capture, or `capture_window.ps1`; then read the PNG |
+| Feel, sound, taste | Ask the human for a specific check |
+
+## MCP etiquette
+
+- One mutation at a time, read before write, check every result for success.
+- After an editor restart the connection drops: confirm the port listens, then reconnect with `/mcp`.
+- Hand non-editor work (data, docs, generator scripts, reviews) to subagents. MCP stays in the main
+  session.
