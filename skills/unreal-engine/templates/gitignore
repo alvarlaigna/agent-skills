@@ -1,0 +1,31 @@
+# Unreal generated folders
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Plugins/**/Binaries/
+Plugins/**/Intermediate/
+
+# Packaged builds (ue.py package writes here; keep Build/ tracked, it holds platform settings)
+Packaged/
+
+# IDE and project files (regenerate with GenerateProjectFiles)
+.vs/
+.vscode/
+.idea/
+*.sln
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+*.xcodeproj/
+*.xcworkspace/
+
+# Local agent settings
+.claude/settings.local.json
+CLAUDE.local.md
+
+# OS
+.DS_Store
+Thumbs.db
