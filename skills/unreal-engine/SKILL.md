@@ -1,6 +1,6 @@
 ---
 name: unreal-engine
-description: Builds, debugs, tests, and ships Unreal Engine 5 games with a coding agent that drives the editor through Unreal MCP, editor Python, and the command line. Use for UE5 C++ gameplay code, UCLASS/UPROPERTY reflection, Blueprint and UMG work, levels and actors, asset imports, Live Coding versus full rebuilds, UnrealBuildTool and UAT packaging, cook errors, Windows and web (Wasm) builds, automation tests, PIE and self-play testing, multi-agent setups on one project, and game jams. Complements Epic's unreal-mcp skill, which covers MCP tool discovery.
+description: Builds, debugs, tests, and ships Unreal Engine 5 games with a coding agent that drives the editor through Unreal MCP, editor Python, and the command line. Use for UE5 C++ gameplay code, UCLASS/UPROPERTY reflection, Blueprint and UMG work, levels and actors, asset imports, Live Coding versus full rebuilds, UnrealBuildTool and UAT packaging, cook errors, Windows and web (Wasm) builds, character animation (AnimGen, motion matching, retargeting), automation tests, PIE and self-play testing, multi-agent setups on one project, and game jams. Complements Epic's unreal-mcp skill, which covers MCP tool discovery.
 compatibility: Agent Skills format. Scripts need Python 3.9+ and a local Unreal Engine 5 install; capture_window.ps1 is Windows-only. Written against UE 5.8 and the 5.9 Preview.
 ---
 
@@ -85,6 +85,8 @@ A change is done when all of these hold, and the report says which ones were not
   audio, meshes), DataTables, redirectors, cook rules, dependency closure, external actors, licences.
 - [Build and ship](references/build-and-ship.md): UBT and UAT commands, Shipping builds, size
   limits, cook-only failures, verifying the artifact, the web (Wasm) target.
+- [Animation](references/animation.md): choosing between state machines, motion matching and
+  AnimGen; AnimGen training, tuning and limits; retargeting; procedural layers; measuring motion.
 - [Testing](references/testing.md): the testing ladder, self-play modes, shot runs, real input,
   measuring performance, human playtests.
 - [Multi-agent](references/multi-agent.md): ownership, worktrees, shared hub files, reviewers,
@@ -128,6 +130,8 @@ Run these; do not read their source unless debugging the skill. Each prints `--h
   GameMode actor is hidden in game. Put visuals on a world actor.
 - A variable added to a Blueprint after its actor was placed may read 0 on the placed instance
   rather than the class default. Check the instance, not the class.
+- In UE 5.9 hidden bones stop animating: meshes attached to a hidden head or hand bone jump every
+  other frame. Call `SetAlwaysAnimateHiddenBones(true)`. Stills never show it; compare frames.
 - Overlay materials do not draw on Nanite meshes. Use custom depth and stencil for outlines.
 - A material used by Niagara mesh particles needs its "Used with Niagara Mesh Particles" flag,
   or it renders as the default material.
