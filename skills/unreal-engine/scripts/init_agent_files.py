@@ -3,20 +3,25 @@
 
     python init_agent_files.py --project ./MyGame
     python init_agent_files.py --project ./MyGame --only AGENTS.md CLAUDE.md
+    python init_agent_files.py --project ./MyGame --install-skill
 
 Copies from ../templates/: AGENTS.md, CLAUDE.md, .gitignore, .gitattributes (Git LFS).
-Fills in the project name and engine association. Refuses to overwrite an
-existing file unless --force. Standard library only.
+Fills in the project name and engine association. --install-skill also copies
+this whole skill into <Project>/Skills/unreal-engine/, where the editor's skill
+registry (UE 5.9+) offers it to every connected agent. Refuses to overwrite an
+existing file or folder unless --force. Standard library only.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 from pathlib import Path
 
-TEMPLATES = Path(__file__).resolve().parent.parent / "templates"
+SKILL_ROOT = Path(__file__).resolve().parent.parent
+TEMPLATES = SKILL_ROOT / "templates"
 FILES = {  # template name -> file name in the project
     "AGENTS.md.template": "AGENTS.md",
     "CLAUDE.md.template": "CLAUDE.md",
@@ -29,6 +34,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--project", default=".", help="project folder containing the .uproject")
     ap.add_argument("--only", nargs="+", choices=list(FILES.values()), help="write only these files")
+    ap.add_argument("--install-skill", action="store_true",
+                    help="copy this skill into <Project>/Skills/ for in-editor agents")
     ap.add_argument("--force", action="store_true", help="overwrite existing files")
     a = ap.parse_args(argv)
 
@@ -57,6 +64,16 @@ def main(argv=None) -> int:
             text = text.replace(key, value)
         dst.write_text(text, encoding="utf-8", newline="\n")
         wrote.append(target)
+
+    if a.install_skill:
+        dst = project / "Skills" / SKILL_ROOT.name
+        if dst.exists() and not a.force:
+            skipped.append(str(dst.relative_to(project)))
+        else:
+            if dst.exists():
+                shutil.rmtree(dst)
+            shutil.copytree(SKILL_ROOT, dst, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+            wrote.append(str(dst.relative_to(project)))
 
     for f in wrote:
         print(f"wrote   {project / f}")

@@ -26,7 +26,7 @@ How an agent works with a live Unreal Editor without losing work.
 
 ## MCP etiquette
 
-- **Discover once, write it down.** After the first `list_toolsets` and `describe_toolset` calls,
+- **Discover once, write it down.** After the first `list_toolsets` and `describe_toolsets` calls,
   record the exact tool names, argument shapes and quirks in `docs/MCP_TOOLS.md`. Mark each needed
   capability as available or missing (actor spawn/transform/delete, save, console command,
   viewport capture, PIE start/stop, Python, import, asset-registry queries, DataTable import, UMG,
@@ -42,6 +42,14 @@ How an agent works with a live Unreal Editor without losing work.
 - **Some tools need arguments they do not advertise as required.** Viewport capture tools, for
   example, may refuse an empty request and want a camera position. Note it in `MCP_TOOLS.md`.
 - **Never edit asset files on disk.** `.uasset` and `.umap` change only through the editor.
+- **Keep calls short.** Clients time out (Claude Code after about two minutes). Split long work, or
+  send a `progressToken` for heartbeats.
+- **One script for many edits.** Through `execute_python`, write one script for bulk edits instead
+  of dozens of tool calls; imports at the top level only, no star imports; the last expression is
+  the result and `print` goes to the Output Log. See [modern engine](modern-engine.md).
+- **Project rules for every agent.** Put naming rules, protected folders and the test map in the
+  project's MCP server instructions (Project Settings, Agentic Workflows, stored in
+  `DefaultGame.ini`); every connecting agent receives them.
 
 ## Editor Python
 
@@ -115,7 +123,8 @@ but predictable.
 ## Ports, several editors, reconnecting
 
 - The default MCP port is 8000. Give each editor its own: `-ModelContextProtocolPort=8011` on the
-  command line, or `ServerPortNumber` under `[/Script/ModelContextProtocolEngine.ModelContextProtocolSettings]`
+  command line, Server Port Number in Editor Preferences (Agentic Workflows, Model Context Protocol,
+  in 5.9), or `ServerPortNumber` under `[/Script/ModelContextProtocolEngine.ModelContextProtocolSettings]`
   in `Saved/Config/<Platform>Editor/EditorPerProjectUserSettings.ini`. Regenerate the client
   config after changing it (`ModelContextProtocol.GenerateClientConfig ClaudeCode`).
 - With several editors running, confirm which process answers before any mutation (the server's
@@ -156,6 +165,8 @@ save what it changes. Do not run it while a GUI editor has the same project open
 
 - **UE 5.8:** Unreal MCP is Experimental. Calls run on the editor's game thread; treat it as
   single-writer even where concurrent requests are accepted.
-- **UE 5.9 Preview:** MCP launches with the editor and has more toolsets (Python, PIE, captures,
-  gameplay testing), but toolset plugins are off in new projects until enabled. Test on a copy of
+- **UE 5.9 Preview:** MCP launches with the editor and has more toolsets (Blueprints, editor
+  actions, MVVM, Slate inspection, performance, files, scene capture, console, Texture Graph,
+  widget animation), but toolset plugins are off in new projects until enabled. Settings moved to
+  Agentic Workflows; agents can also run inside the editor's Assistant panel. Test on a copy of
   a project rather than converting the main one.

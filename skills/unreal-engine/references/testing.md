@@ -50,7 +50,10 @@ In that mode the game:
   times;
 - quits when done (`FGenericPlatformMisc::RequestExit(false)`).
 
-Run it in the packaged build at a fixed window size (`-windowed -ResX=1920 -ResY=1080`). It also
+Run it in the packaged build at a fixed window size (`-windowed -ResX=1920 -ResY=1080`).
+A Development build can also host the MCP server with its runtime tools (input, console, scene
+capture, performance), so an agent can drive the packaged game directly; never in a release build
+(see [modern engine](modern-engine.md#testing-and-validation)). It also
 records trailer footage and covers for when the PC is locked or nobody is at the desk.
 
 A test that flies with the autopilot also tests the autopilot. When the autopilot changes, a

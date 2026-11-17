@@ -1,6 +1,6 @@
 ---
 name: unreal-engine
-description: Builds, debugs, tests, and ships Unreal Engine 5 games with a coding agent that drives the editor through Unreal MCP, editor Python, and the command line. Use for UE5 C++ gameplay code, UCLASS/UPROPERTY reflection, Blueprint and UMG work, levels and actors, asset imports, Live Coding versus full rebuilds, UnrealBuildTool and UAT packaging, cook errors, Windows and web (Wasm) builds, character animation (AnimGen, motion matching, retargeting), automation tests, PIE and self-play testing, multi-agent setups on one project, and game jams. Complements Epic's unreal-mcp skill, which covers MCP tool discovery.
+description: Builds, debugs, tests, and ships Unreal Engine 5 games with a coding agent that drives the editor through Unreal MCP, editor Python, and the command line. Use for UE5 C++ gameplay code, UCLASS/UPROPERTY reflection, Blueprint and UMG work, levels and actors, asset imports, Live Coding versus full rebuilds, UnrealBuildTool and UAT packaging, cook errors, Windows and web (Wasm) builds, character animation (AnimGen, motion matching, retargeting), UE 5.8 and 5.9 features (Sandboxes, PCG, in-editor agents, Blueprints as text), automation tests, PIE and self-play testing, multi-agent setups on one project, and game jams. Complements Epic's unreal-mcp skill, which covers MCP tool discovery.
 compatibility: Agent Skills format. Scripts need Python 3.9+ and a local Unreal Engine 5 install; capture_window.ps1 is Windows-only. Written against UE 5.8 and the 5.9 Preview.
 ---
 
@@ -8,7 +8,7 @@ compatibility: Agent Skills format. Scripts need Python 3.9+ and a local Unreal 
 
 An operating model for agent-driven Unreal work: which channel to use for what, the rules that
 stop work from being lost, how to build and ship, and how to prove a change works. Tool discovery
-over MCP (`list_toolsets`, `describe_toolset`, `call_tool`) belongs to Epic's `unreal-mcp` skill;
+over MCP (`list_toolsets`, `describe_toolsets`, `describe_tools`, `call_tool`) belongs to Epic's `unreal-mcp` skill;
 use it when installed. This skill does not repeat it.
 
 ## Pick the channel
@@ -31,7 +31,8 @@ files over hand-placed values. Text is cheaper to write, diff, review, and rebui
 2. `python scripts/ue.py env --project <dir>`: engine root, `.uproject`, whether an editor is running.
 3. `python scripts/check_log.py --project <dir>`: any `Can't find class descriptor` means the
    editor runs a stale game module. Save nothing from that editor; rebuild first.
-4. Confirm which editor answers MCP before changing anything (project path, port). Keep the exact
+4. Confirm which editor answers MCP before changing anything (the instance metadata in the
+   `initialize` result names the project and process). Keep the exact
    tool names and arguments that worked in `docs/MCP_TOOLS.md`; it saves the search next session.
 5. Read the clock (`date` / `Get-Date`) before writing any time into a log. Never estimate it.
 
@@ -95,6 +96,9 @@ A change is done when all of these hold, and the report says which ones were not
   submission checklist.
 - [Ecosystem](references/ecosystem.md): built-in plugins and open-source plugins worth knowing,
   with caveats.
+- [Modern engine](references/modern-engine.md): what UE 5.8 and 5.9 changed for agents: MCP and
+  `execute_python` rules, server instructions, in-engine skills, the Assistant panel, Blueprints
+  as text, Sandboxes, PCG with an agent, rendering and world-building choices, cooked-build MCP.
 - [In-game AI](references/in-game-ai.md): language-model characters and generated speech inside
   the game: the rules engine owns the facts, the model only acts.
 
@@ -113,7 +117,9 @@ Run these; do not read their source unless debugging the skill. Each prints `--h
 - `scripts/audit_source_assets.py`: checks source art and audio before import: non-power-of-two
   textures, clipped or silent WAVs, loop seams, stereo music, oversized files.
 - `scripts/init_agent_files.py`: writes `AGENTS.md`, `CLAUDE.md`, `.gitignore` and `.gitattributes`
-  (Git LFS) into a UE project from `templates/`. Refuses to overwrite.
+  (Git LFS) into a UE project from `templates/`. Refuses to overwrite. `--install-skill` also copies
+  this skill into `<Project>/Skills/` so agents connected to the editor (including the in-editor
+  Assistant) can load it.
 - `scripts/capture_window.ps1` (Windows): screenshot of the editor or game window, even when
   covered, for the agent to read.
 - `scripts/editor/dependency_closure.py` (runs inside the editor): lists every package a map pulls
@@ -145,6 +151,11 @@ Run these; do not read their source unless debugging the skill. Each prints `--h
   first click or key press.
 - The replay system records at a low rate by default (`demo.RecordHz`), and physics actors jitter
   on playback. Test a replay-based feature with real content on day one.
+- MCP import tools default to `bSave = false` and `bReplaceExisting = false`. Pass both, or the
+  import exists only in memory.
+- The Blueprint graph text round trip (`read_graph_dsl` then `write_graph_dsl`) loses wiring for
+  multi-output nodes and merged branches in 5.8. Inspect with it; edit with `create_node` and
+  `connect_pins`; compile and read back.
 - MCP tool results can be bulleted text rather than JSON. Parse defensively and test the parser.
 - The default MCP port (8000) collides with common dev servers. Give each editor its own port.
 - Anything an agent session launches dies with that session. Start long-lived editors outside it.
