@@ -46,6 +46,7 @@ def import_files(files, dest="/Game/MyGame/Audio"):
     return [p for t in tasks for p in t.imported_object_paths]
 ```
 
+- The MCP `ImportFile` tools default to `bReplaceExisting = false` and `bSave = false`; pass both.
 - Give every tool absolute paths. Relative paths resolve against the engine's working directory,
   not the project, and fail in confusing ways.
 - After import, set and verify the properties the game depends on (looping, compression, sRGB,

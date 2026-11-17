@@ -63,6 +63,8 @@ Some files are hubs everyone needs (GameMode, a constants header, a registry).
   and proposes cuts sees mismatches the working sessions do not.
 - **One place for the human to decide.** Twenty sessions asking twenty questions is too many.
   Route decisions through one session and a short list.
+- **Sandboxes** (UE 5.8+, Experimental) hold an agent's editor changes apart until a human or the
+  main session persists them; one sandbox per editor. See [modern engine](modern-engine.md#sandboxes).
 - **Two agents sharing one editor** hand it over explicitly: save, verify nothing is dirty, write
   the handoff note, then the other side starts.
 - **Claims against ledgers.** Credits, store text and jam declarations go stale as tools change.
