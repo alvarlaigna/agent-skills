@@ -24,6 +24,8 @@ cook and size risk.
 | UMG Viewmodel (MVVM) | Widget bindings polled on tick | Beta plugin. Fires on change only |
 | Mover | `UCharacterMovementComponent` for non-humanoid or networked custom movement | Experimental. Modular movement modes with network prediction |
 | Mass Entity | Thousands of actors for crowds and traffic | Data-oriented; large setup cost |
+| Pose Search (Motion Matching) | Hand-built locomotion state machines | The Game Animation Sample is the reference setup; see [animation](animation.md) |
+| AnimGen | Animation assets at runtime for locomotion | Experimental (UE 5.8+). Neural controllers trained in the editor for hours; see [animation](animation.md#animgen) |
 | Data Validation | Manual asset checks | Write `UEditorValidatorBase` subclasses; runs on save and on demand |
 
 `FInstancedStruct` (polymorphic structs by value in arrays and data assets) is part of
