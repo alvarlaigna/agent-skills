@@ -56,6 +56,7 @@ skills.
 | [`ebitengine`](skills/ebitengine/) | Build, test, and ship Go games and tools with Ebitengine/Ebiten. |
 | [`estonian-grammar`](skills/estonian-grammar/) | Write, proofread, and rewrite natural Estonian, with case-form and register guidance. |
 | [`raylib`](skills/raylib/) | Build 2D and 3D games with raylib in C, C++, or Go. |
+| [`unity`](skills/unity/) | Build, test, and ship Unity 6 games in C# with URP, the Input System, Assembly Definitions, and headless test and build runs. |
 | [`unreal-engine`](skills/unreal-engine/) | Build, test, and ship Unreal Engine 5 games with an agent driving the editor through Unreal MCP, editor Python, and UBT/UAT. |
 
 ## Add your own
